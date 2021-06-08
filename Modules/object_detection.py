@@ -7,7 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/1dD9SicNxkj95WgI5l8zjM1-fsxhuYc4O
 """
 
-!pip install git+https://github.com/taehoonlee/tensornets.git
+# !pip install git+https://github.com/taehoonlee/tensornets.git
 
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
@@ -20,22 +20,21 @@ inputs = tf.placeholder(tf.float32, [None, 416, 416, 3])
 model = nets.YOLOv3COCO(inputs, nets.Darknet19)
 # model = nets.YOLOv2(inputs, nets.Darknet19)
 #frame=cv2.imread("D://pyworks//yolo//truck.jpg",1)
-from google.colab import drive
-drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
 
 import matplotlib.pyplot as plt
-classes={'0':'person'} # '1':'bicycle','2':'car','3':'bike','5':'bus','7':'truck'
+classes={'0':'person', '1':'bicycle','2':'car','3':'bike','5':'bus','7':'truck'}
 list_of_classes=[0,1,2,3,5,7]
 s=0
+
 with tf.Session() as sess:
     sess.run(model.pretrained())
-#"D://pyworks//yolo//videoplayback.mp4"    
-
-    # uploaded = files.upload()
-    cap = cv2.VideoCapture('/content/drive/My Drive/Cam Detection.mp4')
+    cap = cv2.VideoCapture('/VideoInput/Cam_Detection.mp4')
     fourcc = cv2.VideoWriter_fourcc(*'XVID') #codec
-    Output = cv2.VideoWriter('/content/drive/My Drive/Processed Video.avi', fourcc, 20.0, (416,416), True)
-    print('Drive Opened')
+    Output = cv2.VideoWriter('/Output/Processed_Video.avi', fourcc, 20.0, (416,416), True)
+    
+    print('Reading Video...')
     
     while(cap.isOpened()):
         ret, frame = cap.read()
