@@ -1,5 +1,8 @@
 import cv2
 import datetime
+import time
+
+from Modules.object_detection import check_frame
 
 def Processing(file, file_save):
     if file == '0':
@@ -12,6 +15,10 @@ def Processing(file, file_save):
     
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
     Output = cv2.VideoWriter(file_save, fourcc, 20.0, (640, 352))
+
+    count=0
+
+    start_time=time.time()
 
     while cap.isOpened():
         diff = cv2.absdiff(frame1,frame2)
@@ -30,6 +37,7 @@ def Processing(file, file_save):
             cv2.putText(frame1, "STATUS : STATIONARY", (480,15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,255), 2)
 
         else :
+            count=count+1
             for contour in contours :
                 (x, y, w, h) = cv2.boundingRect(contour)
                 if cv2.contourArea(contour) < 1500 :
@@ -37,13 +45,28 @@ def Processing(file, file_save):
                     continue
                 cv2.rectangle(frame1, (x,y), (x+w,y+h), (0,255,0), 2)
                 cv2.putText(frame1, "STATUS : MOVEMENT", (480,15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,255), 2)
+
+                if time.time()-start_time>3:
+                    # cv2.imshow("Frame%d.jpg"%count,frame1)
+
+                    ### OBJECT DETECTION
+                    
+                    objects=check_frame(frame2)
+                    print(objects)
+
+                    ### OBJECT DETECTION
+
+                    start_time=time.time()
+                
 #                cv2.drawContours(frame1, contours, -1, (255,255,0), 2)
         # cv2.imshow('FEED', diff)
         # cv2.imshow('FEED', gray)
         # cv2.imshow('FEED', blur)
         # cv2.imshow('FEED', thresh)
         # cv2.imshow('FEED', dilated)
-        cv2.imshow('FEED', frame1)
+        
+        cv2.imshow('FEED', frame1)      #Video Feed
+        
         B = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         L = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 
@@ -56,8 +79,8 @@ def Processing(file, file_save):
 
     cv2.destroyAllWindows()
     
-File = "E:/DataSet/AutomatedSurveil/MotionDetection/smalltown.mp4" #input('\nEnter location of video: ')
-File_Save = "E:/DataSet/AutomatedSurveil/Results/smalltownResult.avi" #input('\nEnter the location to save video: ')
+File = "VideoInput/Cam_Detection.mp4" #input('\nEnter location of video: ')
+File_Save = "Output/Cam_Detection.avi" #input('\nEnter the location to save video: ')
 
 Processing(File, File_Save)
 
