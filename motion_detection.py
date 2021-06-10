@@ -46,19 +46,19 @@ def Processing(file, file_save):
                 cv2.rectangle(frame1, (x,y), (x+w,y+h), (0,255,0), 2)
                 cv2.putText(frame1, "STATUS : MOVEMENT", (480,15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,255), 2)
 
-                if time.time()-start_time>3:
-                    # cv2.imshow("Frame%d.jpg"%count,frame1)
+                # if time.time()-start_time>3:
+                #     # cv2.imshow("Frame%d.jpg"%count,frame1)
 
-                    ### OBJECT DETECTION
+                #     ### OBJECT DETECTION
                     
-                    objects=check_frame(frame2)
-                    print(objects)
+                #     objects=check_frame(frame2)
+                #     print(objects)
 
-                    ### OBJECT DETECTION
+                #     ### OBJECT DETECTION
 
-                    start_time=time.time()
+                #     start_time=time.time()
                 
-#                cv2.drawContours(frame1, contours, -1, (255,255,0), 2)
+                # cv2.drawContours(frame1, contours, -1, (255,255,0), 2)
         # cv2.imshow('FEED', diff)
         # cv2.imshow('FEED', gray)
         # cv2.imshow('FEED', blur)
